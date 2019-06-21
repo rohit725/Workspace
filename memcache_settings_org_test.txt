@@ -1,0 +1,39 @@
+from cache_utils import Memcache
+
+
+mem = Memcache()
+
+
+def org_get_list(self, request):
+    status = -1
+    result = []
+
+    try:
+        body = json.loads(request.body)
+        api_token = body.get("api_token", "")
+
+        status, auth_result = authenbl.validateToken(api_token)
+        if status == 0:
+            org_list = mem.get_data_from_cache('org_list')
+            role_id = auth_result.get("role_id", 4)
+            if not org_list:
+                status, result, column_names = db.org_get_list()
+                if status == 0:
+                    org_list = result
+                    result = []
+                for record in org_list:
+                    org = dict(list(zip((tuple(column_names)), (record))))
+                    result.append(org)
+                mem.dump_data_to_cache('org_list', result)
+            else:
+                result = org_list
+            for ind, org in enumerate(result):
+                if (role_id == 3 and org['org_code'] == auth_result['org_code']):
+                    result[count]['org_code'] = "-"
+    except Exception as err:
+        result = str(err)
+        self.logger.error(result)
+
+    return status, result
+
+mem.delete_from_cache('org_list')    #In org_settings_add to refresh cash.

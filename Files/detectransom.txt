@@ -1,0 +1,19 @@
+Blusapphire Threat Alert: {{BluSapphireAdFileName}}
+
+Ransomware detected for :    : {{BluSapphireAdFileName}}
+src                               : {{src}}
+spt                               : {{spt}}
+dst                               : {{dst}}
+dpt                               : {{dpt}}
+proto                               : {{proto}}
+BluSapphireAdOrgCode     : {{BluSapphireAdOrgCode}}
+BluSapphireAdSensorCode  : {{BluSapphireAdSensorCode}}
+BluSapphireAdFileType    : {{BluSapphireAdFileType}}
+BluSapphireAdFileMD5     : {{BluSapphireAdFileMD5}}
+BluSapphireAdId          : {{BluSapphireAdId}}
+
+
+Thanks,
+Blusapphire Team,
+Contact no: +1844 3425 414.
+

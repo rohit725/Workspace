@@ -1,0 +1,12 @@
+Intrusion Alert Received:
+
+Verdict :{{verdict}}
+Source IP : {{src_ip}}
+Destination IP : {{dst_ip}}
+Signature : {{signature}}
+
+Thank you,<br/>
+BluSapphire Technologies<br/>
+support@blusapphire.net<br/>
+<b>Tel:</b> 1-844-342-5414<br/>
+

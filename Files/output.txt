@@ -1,0 +1,5 @@
+city,updated,handle,description,created,country,range,state,postal_code,ip,cidr,emails,name
+,2019-01-23T13:43:10Z,IXCW-RIPE,|Sedo Domain Parking
+Im Mediapark 6b
+50670 Koeln|,2007-10-25T09:36:24Z,DE,91.195.240.0 - 91.195.241.255,,,91.195.240.87,91.195.240.0/23,['abuse@internetx.com'],SEDO-NET
+,2019-01-29T12:43:05Z,,SEDO GmbH,2019-01-29T12:43:05Z,,91.195.240.0 - 91.195.241.255,,,91.195.240.87,91.195.240.0/23,,
