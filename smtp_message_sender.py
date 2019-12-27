@@ -1,12 +1,13 @@
+#!/usr/bin/env python
 import smtplib
 
 
 def send_mail(filepath):
-    sender = 'abhangay@blusapphire.net'
-    receivers = ['rpandey@blusapphire.net']
+    sender = 'rpandey@blusapphire.net'
+    receivers = ['rpandey516@gmail.com', 'rannarawat76448@gmail.com']
 
-    lst = ["From: From Person <abhangay@blusapphire.net>",
-           "To: To Person <rpandey@blusapphire.net>",
+    lst = ["From: From Ranna <rpandey@blusapphire.net>",
+           "To: To Rohit <rpandey516@gmail.com', 'rannarawat76448@gmail.com'>",
            "MIME-Version: 1.0",
            "Content-type: text/html",
            "Subject: SMTP HTML e-mail test",
@@ -19,10 +20,10 @@ def send_mail(filepath):
     message += html_str
 
     try:
-        smtpObj = smtplib.SMTP('smtp-mail.outlook.com:587')
+        smtpObj = smtplib.SMTP('smtp.office365.com:587')
         smtpObj.ehlo()
         smtpObj.starttls()
-        smtpObj.login("abhangay@blusapphire.net", "4bh4n94y@30-05")
+        smtpObj.login("rpandey@blusapphire.net", "micr0s0ft@76448")
         smtpObj.sendmail(sender, receivers, message)
         smtpObj.close()
         print("Successfully sent email")

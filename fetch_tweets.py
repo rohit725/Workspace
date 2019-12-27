@@ -28,7 +28,7 @@ class TiData(object):
         try:
             print('Creating dataframe from tag: %s' % (hash_name))
             api = tweepy.API(_auth, wait_on_rate_limit=True)
-            time_span_days = 90
+            time_span_days = 30
             current_date = datetime.date.today()
             dfObj = pd.DataFrame(columns=[
                                  'created_at', 'tweet', 'user_name', 'user_id', 'follower_count', 'hash_tag/user'])
@@ -117,7 +117,7 @@ class TiData(object):
             pool = Pool(processes=5)
             hash_tags = ['#malware', '#spam',
                          '#opendir', '#ransomware', '#Phishing']
-            users = ['@PhishingAi', '@VK_Intel', '@shotgunner101']
+            users = ['@PhishingAi', '@VK_Intel', '@shotgunner101', '@bad_packets']
             tags_list = [{'func': 'createDataframeFromTag', 'value': y}
                          for y in hash_tags]
             users_list = [{'func': 'createDataframeFromUser', 'value': y}

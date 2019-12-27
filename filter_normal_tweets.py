@@ -37,6 +37,7 @@ class Filterti(object):
         ip_list.extend(domain_list)
         for count, ip in enumerate(ip_list):
             if '[' in ip:
+                # print("found")
                 ip_list[count] = ip.replace('[', '')
             if '(' in ip:
                 ip_list[count] = ip.replace('(', '')

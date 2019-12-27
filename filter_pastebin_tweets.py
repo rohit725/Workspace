@@ -1,3 +1,4 @@
+from selenium import webdriver
 import pandas as pd
 import traceback
 import requests
@@ -9,6 +10,7 @@ import os
 
 load_file = 'Files/pastebin_tweets.csv'
 save_file = 'Files/filtered_pastebin_tweets.csv'
+directory = 'Files/'
 
 
 class Filterti(object):
@@ -18,12 +20,10 @@ class Filterti(object):
         else:
             self.paste_df = None
 
-    def scrape_pastebin_urls(self, pastebin_urls):
-        paste_keys = []
+    def scrape_pastebin_urls(self, pastebin_urls, username):
         ip_domain_urls = []
         for url in pastebin_urls:
             if url.startswith('https'):
-                print(url)
                 try:
                     response = requests.get(url, timeout=(4, 5))
                 except Exception as e:
@@ -34,33 +34,34 @@ class Filterti(object):
                     try:
                         if response is not None and response.url.startswith('https://pastebin.com/'):
                             print('Its a pastebin url: %s' % (response))
-                            u = re.findall(r"([^\/?]+)(?:\?.+)?$", response.url)
-                            for items in u:
-                                paste_keys.append(items)
+                            ip_domain_urls.append(response.url)
                     except Exception as e:
                         print(e)
                         traceback.print_exc()
                         continue
-        if paste_keys:
-            for key in paste_keys:
-                base = 'https://scrape.pastebin.com/api_scrape_item.php?i=' + key
-                page = urllib.request.urlopen(base).read().decode("utf-8")
-                time.sleep(1)
-                page = page.split("\r\n")
-                for data in page:
-                    ip_list = re.findall(
-                        r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", data)
-                    url_list = re.findall(
-                        r"(?:(?:hxxp?|http?|https?|hxxps):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+", data)
-                    domain_list = re.findall(
-                        r"^[\w\-?=%.]+\.[\w/\-?=%.]+$", data)
-                ip_domain_urls.extend(ip_list)
-                ip_domain_urls.extend(url_list)
-                ip_domain_urls.extend(domain_list)
         if ip_domain_urls:
-            return ip_domain_urls
+            file_list = []
+            browser = webdriver.Chrome(executable_path ="/home/rpandey/Downloads/chromedriver")
+            browser.maximize_window()
+            for url in ip_domain_urls:
+                print("Opening url: %s" % url)
+                browser.get(url)
+                key = re.findall(r"([^\/?]+)(?:\?.+)?$", url)
+                if "raw" not in url:
+                    text = browser.find_element_by_class_name("text").text
+                else:
+                    text = browser.find_element_by_tag_name("body").text
+                filename = "%s-pastebin-%s.txt" % (username, key)
+                with open(directory + filename, "w") as f:
+                    f.write(text)
+                file_list.append(filename)
+            if file_list:
+                return file_list
+            else:
+                return ''
         else:
             return ''
+
 
     def filter(self):
         start = time.time()
@@ -70,12 +71,12 @@ class Filterti(object):
                 dfObj = pd.read_csv(save_file, encoding='utf-8')
             else:
                 dfObj = pd.DataFrame(columns=[
-                    'created_at', 'ip_domain_urls', 'user_name', 'user_id', 'follower_count', 'hash_tag/user'])
+                    'created_at', 'file_names', 'user_name', 'user_id', 'follower_count', 'hash_tag/user'])
             count = 0
             for index, row in self.paste_df.iterrows():
                 shortlinks = list(eval(row['twitter_shortlinks']))
                 if (count + len(shortlinks)) < 250:
-                    ip_domain_urls = self.scrape_pastebin_urls(shortlinks)
+                    ip_domain_urls = self.scrape_pastebin_urls(shortlinks, row['user_name'])
                     ind = len(dfObj)
                     dfObj.loc[ind] = [row['created_at'], ip_domain_urls, row['user_name'],
                                       row['user_id'], row['follower_count'], row['hash_tag/user']]
