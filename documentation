@@ -1,0 +1,28 @@
+1)  To check the misp mariadb from backend:
+        create a pseudo terminal in the running docker container using (docker exec -it <container-id> /bin/bash)
+        then run command(mysql -u root misp) inside the container
+
+2)  To create a mixed certificate with private key for misp server use command (cat <fullchainfile>.pem <privkeyfile>.pem > <mixedfilename>.pem)
+
+3)  To recreate server docker container use below command:
+        docker run -it -d \
+            -p 443:443 \
+            -p 80:80 \
+            -p 3306:3306 \
+            -p 6666:6666 \
+            -v /docker/misp-db:/var/lib/mysql \
+            -v /opt/blusapphire/docker_apps/docker-misp/cert/challenges:/var/www/challenges \
+            -v /opt/blusapphire/docker_apps/docker-misp/cert/certificates:/etc/letsencrypt \
+            --privileged=true \
+            harvarditsecurity/misp
+        
+        Note: privileged true in docker command for misp is used for a mysql permission denied issue on mounted data backup directory
+
+4)  To create client side misp run below command:
+        docker run -it -d \
+            -p 443:443 \
+            -p 80:80 \
+            -p 3306:3306 \
+            -p 6666:6666 \
+            -v /opt/misp02/misp_container_data:/var/lib/mysql \
+            harvarditsecurity/misp
