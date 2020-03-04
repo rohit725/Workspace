@@ -11,8 +11,8 @@ def main():
     if path. isfile(db_file):
         conn = create_engine('sqlite:///%s' % db_file, echo=False)
         df = pd.read_sql_table("tidata", con=conn)
-        print(df.head(20))
-        print(df.tail(20))
+        #print(df.head(20))
+        #print(df.tail(20))
         conn.dispose()
     client = base.Client(('localhost', 11211))
     df = df.apply(lambda x: x['ip_domain_url']=x[ip_domain_url][:200], axis=1)

@@ -26,3 +26,12 @@
             -p 6666:6666 \
             -v /opt/misp02/misp_container_data:/var/lib/mysql \
             harvarditsecurity/misp
+
+5)  For creating misp with port forwarding, you need to follow below steps:
+        Firstly create container using below command:
+            docker run -it -d \
+            -p <port to forward ssl>:<port to forward ssl> \
+            -v <directory to mount>:/var/lib/mysql \
+            --expose <port to forward ssl> \
+            harvarditsecurity/misp
+        Next create a pseudo terminal for docker container using command(docker exec -it <container-id> /bin/bash)
